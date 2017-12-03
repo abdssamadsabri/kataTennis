@@ -2,8 +2,8 @@ package com.quanteam.domain;
 
 public class Player {
 
-    String name;
-    int score =0;
+    private String name;
+    private int score =0;
 
     public void winPoint(){
         this.score +=1 ;

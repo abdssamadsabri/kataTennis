@@ -37,15 +37,60 @@ public class TennisTest {
     @When("^(.+) wins point$")
     public void wins_point(String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        game.getPlayerOne().winPoint();
+        if (arg1.equals("Nadal"))
+            game.getPlayerOne().winPoint();
+        if ((arg1.equals("Federer")))
+            game.getPlayerTwo().winPoint();
 
     }
 
     @Then("^(.+) wins the game$")
     public void wins_the_game(String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        String result = arg1 + "wins";
+        String result = arg1 + " wins";
         Assert.assertEquals(result, game.getScoreGame());
     }
+
+    @Given("^(.+) and (.+) play together$")
+    public void nadal_and_Federer_play_together(String arg1, String arg2) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        game = new TennisGame(arg1, arg2);
+    }
+
+    @When("^They reach (\\d+) point$")
+    public void they_reach_point(int arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        game.getPlayerOne().setScore(arg1);
+        game.getPlayerTwo().setScore(arg1);
+    }
+
+    @Then("^the DEUCE rule is activated$")
+    public void the_DEUCE_rule_is_activated() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        String resultScore = "DEUCE";
+        Assert.assertEquals(resultScore, game.getScoreGame());
+    }
+
+    @Given("^DEUCE rule is activated$")
+    public void deuce_rule_is_activated() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        game.getPlayerOne().setScore(3);
+        game.getPlayerTwo().setScore(3);
+    }
+
+    @Then("^(.+) takes advantage$")
+    public void nadal_takes_advantage(String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        String resultScore = arg1 + " has advantage";
+        Assert.assertEquals(resultScore, game.getScoreGame());
+    }
+
+    @Given("^(.+) has advantage$")
+    public void nadal_has_advantage(String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        game.getPlayerOne().setScore(4);
+        game.getPlayerTwo().setScore(3);
+    }
+
 
 }

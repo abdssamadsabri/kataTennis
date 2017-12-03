@@ -3,9 +3,9 @@ package com.quanteam.domain;
 public class TennisGame {
 
 
-    public Player playerOne;
-    public Player playerTwo;
-    public int scoreGame;
+    private Player playerOne;
+    private Player playerTwo;
+    private String scoreGame;
 
     public TennisGame(String arg1, String arg2) {
         playerOne = new Player(arg1);
@@ -29,18 +29,22 @@ public class TennisGame {
         this.playerTwo = playerTwo;
     }
 
+    public void setScoreGame(String scoreGame) {
+        this.scoreGame = scoreGame;
+    }
+
     public String getScoreGame() {
 
-        String scoreGame = null;
         int scorePlayer1 = 0;
         int scorePlayer2 = 0;
         int score_player_one = playerOne.getScore();
         int score_player_two = playerTwo.getScore();
-        if (score_player_one <= 3 && score_player_two <= 3) {
+        if (score_player_one <= 3 && score_player_two <= 3 && score_player_one != score_player_two) {
             switch (score_player_one) {
                 case 0:
                     scorePlayer1 = 0;
                     break;
+
                 case 1:
                     scorePlayer1 = 15;
                     break;
@@ -65,11 +69,21 @@ public class TennisGame {
                     scorePlayer2 = 40;
                     break;
             }
-            scoreGame = playerOne.name + ":" + scorePlayer1 + "-" + scorePlayer2 + ":" + playerTwo.name;
+            scoreGame = playerOne.getName() + ":" + scorePlayer1 + "-" + scorePlayer2 + ":" + playerTwo.getName();
 
-        } else if (score_player_two > 3 || score_player_one > 3) {
-            if (score_player_one > score_player_two) scoreGame = playerOne.name + "wins";
-            else scoreGame = playerTwo.name + "wins";
+        }
+        if (score_player_one >= 3 && score_player_one > score_player_two + 1) scoreGame = playerOne.getName() + " wins";
+        if (score_player_two >= 3 && score_player_two > score_player_one + 1) scoreGame = playerTwo.getName() + " wins";
+
+        if (score_player_one >= 3 && score_player_one == score_player_two + 1) {
+            scoreGame = playerOne.getName() + " has advantage";
+        }
+        if (score_player_one >= 3 && score_player_two == score_player_one + 1) {
+            scoreGame = playerOne.getName() + " has advantage";
+        }
+
+        if (score_player_one >= 3 && score_player_one == score_player_two) {
+            scoreGame = "DEUCE";
         }
         return scoreGame;
     }
