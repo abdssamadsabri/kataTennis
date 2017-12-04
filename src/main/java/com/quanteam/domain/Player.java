@@ -4,6 +4,11 @@ public class Player {
 
     private String name;
     private int score =0;
+    private int setScore=0;
+
+    public int getSetScore() {
+        return setScore;
+    }
 
     public void winPoint(){
         this.score +=1 ;
@@ -27,5 +32,9 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void setSetScore(int setScore) {
+        this.setScore = setScore;
     }
 }

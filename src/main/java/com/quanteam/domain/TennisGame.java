@@ -72,12 +72,41 @@ public class TennisGame {
             scoreGame = playerOne.getName() + ":" + scorePlayer1 + "-" + scorePlayer2 + ":" + playerTwo.getName();
 
         }
-        if (score_player_one >= 3 && score_player_one > score_player_two + 1) scoreGame = playerOne.getName() + " wins";
-        if (score_player_two >= 3 && score_player_two > score_player_one + 1) scoreGame = playerTwo.getName() + " wins";
+
+        if (score_player_one >= 3 && score_player_one > score_player_two + 1) {
+            scoreGame = playerOne.getName() + " wins the game";
+            playerOne.setScore(0);
+            playerTwo.setScore(0);
+            int setScore = playerOne.getSetScore();
+            setScore++;
+            playerOne.setSetScore(setScore);
+            if (playerOne.getSetScore() == 6 && playerTwo.getSetScore() <= 4) {
+                scoreGame = scoreGame + " and the Set";
+            }
+            if (playerOne.getSetScore() == 7) {
+                scoreGame = scoreGame + " and the match";
+            }
+
+        }
+        if (score_player_two >= 3 && score_player_two > score_player_one + 1) {
+            scoreGame = playerTwo.getName() + " wins the game";
+            playerOne.setScore(0);
+            playerTwo.setScore(0);
+            int setScore = playerTwo.getSetScore();
+            setScore++;
+            playerTwo.setSetScore(setScore);
+            if (playerTwo.getSetScore() == 6 && playerOne.getSetScore() <= 4) {
+                scoreGame = scoreGame + " and the Set";
+            }
+            if (playerTwo.getSetScore() == 7) {
+                scoreGame = scoreGame + " and the match";
+            }
+        }
 
         if (score_player_one >= 3 && score_player_one == score_player_two + 1) {
             scoreGame = playerOne.getName() + " has advantage";
         }
+
         if (score_player_one >= 3 && score_player_two == score_player_one + 1) {
             scoreGame = playerOne.getName() + " has advantage";
         }

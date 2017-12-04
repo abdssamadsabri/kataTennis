@@ -23,3 +23,19 @@ Feature: Tennis game
     And Nadal has advantage
     When Federer wins point
     Then the DEUCE rule is activated
+
+
+  Scenario: a player reach the Set score of 6 and the other player has a Set score of 4 or lower
+    Given Nadal and Federer play together
+    And the Set score of each other is (5,4)
+    And their game score is (40,15)
+    When Nadal wins point
+    Then Nadal wins the game and the Set
+
+
+  Scenario:  a player reach the Set score of 6 and the other player has a Set score of 5
+    Given Nadal and Federer play together
+    And the Set score of each other is (6,5)
+    And their game score is (40,15)
+    When Nadal wins point
+    Then Nadal wins the game and the match

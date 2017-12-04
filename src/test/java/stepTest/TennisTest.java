@@ -47,7 +47,7 @@ public class TennisTest {
     @Then("^(.+) wins the game$")
     public void wins_the_game(String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        String result = arg1 + " wins";
+        String result = arg1 + " wins the game";
         Assert.assertEquals(result, game.getScoreGame());
     }
 
@@ -91,6 +91,44 @@ public class TennisTest {
         game.getPlayerOne().setScore(4);
         game.getPlayerTwo().setScore(3);
     }
+    @When("^Nadal reach the Set score of (\\d+)$")
+    public void nadal_reach_the_Set_score_of(int arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        game.getPlayerOne().setSetScore(arg1);
 
 
+    }
+
+    @When("^Federer has a Set score of (\\d+)$")
+    public void federer_has_a_Set_score_of(int arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        game.getPlayerTwo().setSetScore(arg1);
+    }
+
+    @Given("^the Set score of each other is \\((\\d+),(\\d+)\\)$")
+    public void the_set_score_of_each_other_is(int arg1, int arg2) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        game.getPlayerOne().setSetScore(arg1);
+        game.getPlayerTwo().setSetScore(arg2);
+    }
+    @Given("^their game score is \\((\\d+),(\\d+)\\)$")
+    public void their_game_score_is(int arg1, int arg2) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        game.getPlayerOne().setScore(arg1);
+        game.getPlayerTwo().setScore(arg2);
+    }
+
+    @Then("^Nadal wins the game and the Set$")
+    public void nadal_wins_the_game_and_the_Set() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        String result = game.getPlayerOne().getName() +" wins the game and the Set";
+        Assert.assertEquals(result,game.getScoreGame());
+    }
+
+    @Then("^Nadal wins the game and the match$")
+    public void nadal_wins_the_game_and_the_match() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        String result = game.getPlayerOne().getName() +" wins the game and the match";
+        Assert.assertEquals(result,game.getScoreGame());
+    }
 }
