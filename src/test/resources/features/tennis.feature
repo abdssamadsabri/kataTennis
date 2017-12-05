@@ -24,7 +24,6 @@ Feature: Tennis game
     When Federer wins point
     Then the DEUCE rule is activated
 
-
   Scenario: a player reach the Set score of 6 and the other player has a Set score of 4 or lower
     Given Nadal and Federer play together
     And the Set score of each other is (5,4)
@@ -33,9 +32,24 @@ Feature: Tennis game
     Then Nadal wins the game and the Set
 
 
-  Scenario:  a player reach the Set score of 6 and the other player has a Set score of 5
+  Scenario: a player reach the Set score of 6 and the other player has a Set score of 5
     Given Nadal and Federer play together
     And the Set score of each other is (6,5)
     And their game score is (40,15)
     When Nadal wins point
     Then Nadal wins the game and the match
+
+
+  Scenario: Activation of Tie-Break rule
+    Given Nadal and Federer play together
+    And the Set score of each other is (5,6)
+    And their game score is (40,15)
+    When Nadal wins point
+    Then the Tie-Break rule is activated
+
+  Scenario: Winnig Tie-Break
+    Given Nadal and Federer play together
+    And Tie-Break rule is activated
+    And the score is (6,5)
+    When Nadal wins point
+    Then Nadal wins the Set and match

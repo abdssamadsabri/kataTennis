@@ -17,26 +17,16 @@ public class TennisGame {
         return playerOne;
     }
 
-    public void setPlayerOne(Player playerOne) {
-        this.playerOne = playerOne;
-    }
 
     public Player getPlayerTwo() {
         return playerTwo;
     }
 
-    public void setPlayerTwo(Player playerTwo) {
-        this.playerTwo = playerTwo;
-    }
-
-    public void setScoreGame(String scoreGame) {
-        this.scoreGame = scoreGame;
-    }
 
     public String getScoreGame() {
 
-        int scorePlayer1 = 0;
-        int scorePlayer2 = 0;
+        int scorePlayer1;
+        int scorePlayer2;
         int score_player_one = playerOne.getScore();
         int score_player_two = playerTwo.getScore();
         if (score_player_one <= 3 && score_player_two <= 3 && score_player_one != score_player_two) {
@@ -73,47 +63,101 @@ public class TennisGame {
 
         }
 
-        if (score_player_one >= 3 && score_player_one > score_player_two + 1) {
-            scoreGame = playerOne.getName() + " wins the game";
-            playerOne.setScore(0);
-            playerTwo.setScore(0);
-            int setScore = playerOne.getSetScore();
-            setScore++;
-            playerOne.setSetScore(setScore);
-            if (playerOne.getSetScore() == 6 && playerTwo.getSetScore() <= 4) {
-                scoreGame = scoreGame + " and the Set";
+        if (!isTieBreak()) {
+            if (score_player_one >= 3 && score_player_one > score_player_two + 1) {
+                scoreGame = playerOne.getName() + " wins the game";
+                playerOne.setScore(0);
+                playerTwo.setScore(0);
+                if (playerOne.getSetScore() == 6 && playerTwo.getSetScore() <= 4) {
+                    scoreGame = scoreGame + " and the Set";
+                }
+                if (playerOne.getSetScore() == 7) {
+                    scoreGame = scoreGame + " and the match";
+                }
+
             }
-            if (playerOne.getSetScore() == 7) {
-                scoreGame = scoreGame + " and the match";
+            if (score_player_two >= 3 && score_player_two > score_player_one + 1) {
+                scoreGame = playerTwo.getName() + " wins the game";
+                playerOne.setScore(0);
+                playerTwo.setScore(0);
+                if (playerTwo.getSetScore() == 6 && playerOne.getSetScore() <= 4) {
+                    scoreGame = scoreGame + " and the Set";
+                }
+                if (playerTwo.getSetScore() == 7) {
+                    scoreGame = scoreGame + " and the match";
+                }
             }
 
-        }
-        if (score_player_two >= 3 && score_player_two > score_player_one + 1) {
-            scoreGame = playerTwo.getName() + " wins the game";
-            playerOne.setScore(0);
-            playerTwo.setScore(0);
-            int setScore = playerTwo.getSetScore();
-            setScore++;
-            playerTwo.setSetScore(setScore);
-            if (playerTwo.getSetScore() == 6 && playerOne.getSetScore() <= 4) {
-                scoreGame = scoreGame + " and the Set";
+            if (score_player_one >= 3 && score_player_one == score_player_two + 1) {
+                scoreGame = playerOne.getName() + " has advantage";
             }
-            if (playerTwo.getSetScore() == 7) {
-                scoreGame = scoreGame + " and the match";
+
+            if (score_player_one >= 3 && score_player_two == score_player_one + 1) {
+                scoreGame = playerOne.getName() + " has advantage";
             }
-        }
 
-        if (score_player_one >= 3 && score_player_one == score_player_two + 1) {
-            scoreGame = playerOne.getName() + " has advantage";
-        }
+            if (score_player_one >= 3 && score_player_one == score_player_two) {
+                scoreGame = "DEUCE";
+            }
+        } else if (isTieBreak()) {
+            int tieBreakPlayerOne = playerOne.getTieBreakScore();
+            int tieBreakPlayerTwo = playerTwo.getTieBreakScore();
+            if (tieBreakPlayerOne >= 7 && tieBreakPlayerOne - tieBreakPlayerTwo >= 2) {
+                scoreGame = playerOne.getName() + "wins the Set and the match";
+            } else if (tieBreakPlayerTwo >= 7 && tieBreakPlayerTwo - tieBreakPlayerOne >= 2) {
+                scoreGame = playerTwo.getName() + "wins the Set and the match";
+            } else
+                scoreGame = "Tie-Break score = " + playerOne.getName() + ":" + tieBreakPlayerOne + "-" + tieBreakPlayerTwo + ":" + playerTwo.getName();
 
-        if (score_player_one >= 3 && score_player_two == score_player_one + 1) {
-            scoreGame = playerOne.getName() + " has advantage";
-        }
-
-        if (score_player_one >= 3 && score_player_one == score_player_two) {
-            scoreGame = "DEUCE";
         }
         return scoreGame;
+    }
+
+    public boolean isTieBreak() {
+        return (playerOne.getSetScore() == 6 && playerTwo.getSetScore() == 6);
+    }
+
+    public void playerOneWinsPoint() {
+        int score_player_one = playerOne.getScore();
+        int score_player_two = playerTwo.getScore();
+        if (isTieBreak()) {
+            int actualTieBreak = playerOne.getTieBreakScore();
+            actualTieBreak++;
+            playerOne.setTieBreakScore(actualTieBreak);
+        } else {
+            if (score_player_one >= 3 && score_player_one > score_player_two + 1) {
+                int setScore = playerOne.getSetScore();
+                setScore++;
+                playerOne.setSetScore(setScore);
+
+            } else {
+                int actualScore = playerOne.getScore();
+                actualScore++;
+                playerOne.setScore(actualScore);
+            }
+        }
+
+    }
+
+    public void playerTwoWinsPoint() {
+        int score_player_one = playerOne.getScore();
+        int score_player_two = playerTwo.getScore();
+        if (isTieBreak()) {
+            int actualTieBreak = playerTwo.getTieBreakScore();
+            actualTieBreak++;
+            playerTwo.setTieBreakScore(actualTieBreak);
+        } else {
+            if (score_player_two >= 3 && score_player_two > score_player_one + 1) {
+
+                int setScore = playerTwo.getSetScore();
+                setScore++;
+                playerTwo.setSetScore(setScore);
+            } else {
+                int actualScore = playerTwo.getScore();
+                actualScore++;
+                playerTwo.setScore(actualScore);
+            }
+
+        }
     }
 }

@@ -3,18 +3,22 @@ package com.quanteam.domain;
 public class Player {
 
     private String name;
-    private int score =0;
-    private int setScore=0;
+    private int score = 0;
+    private int setScore = 0;
+    private int tieBreakScore;
+
+
+    public int getTieBreakScore() {
+        return tieBreakScore;
+    }
+
 
     public int getSetScore() {
         return setScore;
     }
 
-    public void winPoint(){
-        this.score +=1 ;
-    }
 
-    public Player(String name){
+    public Player(String name) {
         this.name = name;
     }
 
@@ -22,9 +26,6 @@ public class Player {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getScore() {
         return score;
@@ -36,5 +37,9 @@ public class Player {
 
     public void setSetScore(int setScore) {
         this.setScore = setScore;
+    }
+
+    public void setTieBreakScore(int tieBreakScore) {
+        this.tieBreakScore = tieBreakScore;
     }
 }
