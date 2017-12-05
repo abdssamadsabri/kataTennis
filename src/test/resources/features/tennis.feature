@@ -31,7 +31,7 @@ Feature: Tennis game
     When Nadal wins point
     Then Nadal wins the game and the Set
 
-
+@one
   Scenario: a player reach the Set score of 6 and the other player has a Set score of 5
     Given Nadal and Federer play together
     And the Set score of each other is (6,5)

@@ -12,88 +12,37 @@ public class TennisGame {
         playerTwo = new Player(arg2);
     }
 
-
-    public Player getPlayerOne() {
-        return playerOne;
-    }
-
-
-    public Player getPlayerTwo() {
-        return playerTwo;
-    }
-
-
     public String getScoreGame() {
 
         int scorePlayer1;
         int scorePlayer2;
         int score_player_one = playerOne.getScore();
         int score_player_two = playerTwo.getScore();
-        if (score_player_one <= 3 && score_player_two <= 3 && score_player_one != score_player_two) {
-            switch (score_player_one) {
-                case 0:
-                    scorePlayer1 = 0;
-                    break;
 
-                case 1:
-                    scorePlayer1 = 15;
-                    break;
-                case 2:
-                    scorePlayer1 = 30;
-                    break;
-                default:
-                    scorePlayer1 = 40;
-                    break;
-            }
-            switch (score_player_two) {
-                case 0:
-                    scorePlayer2 = 0;
-                    break;
-                case 1:
-                    scorePlayer2 = 15;
-                    break;
-                case 2:
-                    scorePlayer2 = 30;
-                    break;
-                default:
-                    scorePlayer2 = 40;
-                    break;
-            }
+        if (stillInGame()) {
+            scorePlayer1 = convertScorePlayer(score_player_one);
+            scorePlayer2 = convertScorePlayer(score_player_two);
             scoreGame = playerOne.getName() + ":" + scorePlayer1 + "-" + scorePlayer2 + ":" + playerTwo.getName();
-
         }
 
         if (!isTieBreak()) {
-            if (score_player_one >= 3 && score_player_one > score_player_two + 1) {
-                scoreGame = playerOne.getName() + " wins the game";
+            Player playerWithHighestScore = playerWithHighestScore();
+            Player playerWithLowestScore = playerWithLowestScore();
+            if (WeHaveWinner()) {
+                scoreGame = playerWithHighestScore.getName() + " wins the game";
                 playerOne.setScore(0);
                 playerTwo.setScore(0);
-                if (playerOne.getSetScore() == 6 && playerTwo.getSetScore() <= 4) {
+                if (playerWithHighestScore.getSetScore() == 6 && playerWithLowestScore.getSetScore() <= 4) {
                     scoreGame = scoreGame + " and the Set";
                 }
-                if (playerOne.getSetScore() == 7) {
+                if (playerWithHighestScore.getSetScore() == 7) {
                     scoreGame = scoreGame + " and the match";
                 }
 
             }
-            if (score_player_two >= 3 && score_player_two > score_player_one + 1) {
-                scoreGame = playerTwo.getName() + " wins the game";
-                playerOne.setScore(0);
-                playerTwo.setScore(0);
-                if (playerTwo.getSetScore() == 6 && playerOne.getSetScore() <= 4) {
-                    scoreGame = scoreGame + " and the Set";
-                }
-                if (playerTwo.getSetScore() == 7) {
-                    scoreGame = scoreGame + " and the match";
-                }
-            }
 
-            if (score_player_one >= 3 && score_player_one == score_player_two + 1) {
-                scoreGame = playerOne.getName() + " has advantage";
-            }
-
-            if (score_player_one >= 3 && score_player_two == score_player_one + 1) {
-                scoreGame = playerOne.getName() + " has advantage";
+            if (playerWithHighestScore.getScore() >= 3 && playerWithHighestScore.getScore() == playerWithLowestScore.getScore() + 1) {
+                scoreGame = playerWithHighestScore.getName() + " has advantage";
             }
 
             if (score_player_one >= 3 && score_player_one == score_player_two) {
@@ -113,19 +62,62 @@ public class TennisGame {
         return scoreGame;
     }
 
+    public Player playerWithHighestScore() {
+        int score_player_one = playerOne.getScore();
+        int score_player_two = playerTwo.getScore();
+        if (score_player_one > score_player_two) return playerOne;
+        else return playerTwo;
+    }
+
+    public Player playerWithLowestScore() {
+        int score_player_one = playerOne.getScore();
+        int score_player_two = playerTwo.getScore();
+        if (score_player_one < score_player_two) return playerOne;
+        else return playerTwo;
+    }
+
+    private boolean WeHaveWinner() {
+        return playerWithHighestScore().getScore() >= 3 && playerWithHighestScore().getScore() > playerWithLowestScore().getScore() + 1;
+    }
+
+    private boolean stillInGame() {
+        int score_player_one = playerOne.getScore();
+        int score_player_two = playerTwo.getScore();
+        return score_player_one <= 3 && score_player_two <= 3 && score_player_one != score_player_two;
+    }
+
+    private int convertScorePlayer(int score_player_one) {
+        int scorePlayer;
+        switch (score_player_one) {
+            case 0:
+                scorePlayer = 0;
+                break;
+
+            case 1:
+                scorePlayer = 15;
+                break;
+            case 2:
+                scorePlayer = 30;
+                break;
+            default:
+                scorePlayer = 40;
+                break;
+        }
+        return scorePlayer;
+    }
+
     public boolean isTieBreak() {
         return (playerOne.getSetScore() == 6 && playerTwo.getSetScore() == 6);
     }
 
     public void playerOneWinsPoint() {
-        int score_player_one = playerOne.getScore();
-        int score_player_two = playerTwo.getScore();
+
         if (isTieBreak()) {
             int actualTieBreak = playerOne.getTieBreakScore();
             actualTieBreak++;
             playerOne.setTieBreakScore(actualTieBreak);
         } else {
-            if (score_player_one >= 3 && score_player_one > score_player_two + 1) {
+            if (WeHaveWinner()) {
                 int setScore = playerOne.getSetScore();
                 setScore++;
                 playerOne.setSetScore(setScore);
@@ -140,14 +132,13 @@ public class TennisGame {
     }
 
     public void playerTwoWinsPoint() {
-        int score_player_one = playerOne.getScore();
-        int score_player_two = playerTwo.getScore();
+
         if (isTieBreak()) {
             int actualTieBreak = playerTwo.getTieBreakScore();
             actualTieBreak++;
             playerTwo.setTieBreakScore(actualTieBreak);
         } else {
-            if (score_player_two >= 3 && score_player_two > score_player_one + 1) {
+            if (WeHaveWinner()) {
 
                 int setScore = playerTwo.getSetScore();
                 setScore++;
@@ -160,4 +151,14 @@ public class TennisGame {
 
         }
     }
+
+    public Player getPlayerOne() {
+        return playerOne;
+    }
+
+
+    public Player getPlayerTwo() {
+        return playerTwo;
+    }
+
 }
